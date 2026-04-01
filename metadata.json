@@ -1,0 +1,7 @@
+{
+  "name": "Twitter Carousel Pro 2.0 ",
+  "description": "A professional Instagram carousel generator with a classic Twitter aesthetic, featuring voice-to-text transcription and high-fidelity PNG export.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}

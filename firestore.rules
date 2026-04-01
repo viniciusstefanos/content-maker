@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: users
+    // Fields:
+    //   - uid: string (required)
+    //   - email: string (required, email format)
+    //   - role: string (required, 'admin' or 'user')
+    //   - name: string
+    //   - avatar: string
+    //   - createdAt: string (date-time)
+    //
+    // Collection: carousels
+    // Fields:
+    //   - userId: string (required)
+    //   - profile: map
+    //   - slides: list of maps
+    //   - caption: string
+    //   - ctaContent: string
+    //   - ctaBridge: string
+    //   - config: map
+    //   - templateId: string
+    //   - createdAt: string (date-time)
+    //   - updatedAt: string (date-time)
+    //
+    // Collection: templates
+    // Fields:
+    //   - name: string (required)
+    //   - description: string
+    //   - prompt: string (required)
+    //   - technical: string
+    //   - tone: string
+    //   - userId: string (required)
+    //   - createdAt: string (date-time)
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+         (request.auth.token.email == "vinicius@saltear.com.br" && request.auth.token.email_verified == true));
+    }
+
+    function isValidEmail(email) {
+      return email is string && email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && isOwner(userId) && 
+        (
+          request.resource.data.role == 'user' || 
+          request.resource.data.role == 'admin' // Allow admin role on create to support bootstrap logic
+        ) &&
+        isValidEmail(request.resource.data.email);
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /carousels/{carouselId} {
+      allow read: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow create: if isAuthenticated() && request.resource.data.userId == request.auth.uid;
+      allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow delete: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+
+    match /templates/{templateId} {
+      allow read: if isAuthenticated();
+      allow create: if isAuthenticated() && (request.resource.data.userId == request.auth.uid || isAdmin());
+      allow update: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+      allow delete: if isAuthenticated() && (resource.data.userId == request.auth.uid || isAdmin());
+    }
+  }
+}

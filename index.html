@@ -1,0 +1,86 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Carousel Pro</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            overflow: hidden;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .workspace-grid {
+            background-size: 40px 40px;
+            background-image: radial-gradient(circle, #cbd5e1 1px, transparent 1px);
+        }
+        .dark .workspace-grid {
+            background-image: radial-gradient(circle, #334155 1px, transparent 1px);
+        }
+        
+        /* Fixed card container size for the workspace */
+        .card-container-fixed {
+            width: 432px; /* 1080 * 0.4 */
+            height: 540px; /* 1350 * 0.4 */
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: center;
+        }
+        
+        @media (min-width: 1536px) {
+            .card-container-fixed {
+                width: 540px; /* 1080 * 0.5 */
+                height: 675px; /* 1350 * 0.5 */
+            }
+        }
+
+        .card-preview-wrapper {
+            width: 1080px;
+            height: 1350px;
+            transform-origin: center center;
+            transform: scale(0.4);
+            flex-shrink: 0;
+            transition: all 0.4s cubic-bezier(0.2, 0, 0.2, 1);
+        }
+
+        @media (min-width: 1536px) {
+            .card-preview-wrapper {
+                transform: scale(0.5);
+            }
+        }
+
+        .active-card .card-preview-wrapper {
+            transform: scale(0.44);
+            box-shadow: 0 40px 80px -20px rgba(29, 155, 240, 0.4);
+        }
+        
+        @media (min-width: 1536px) {
+            .active-card .card-preview-wrapper {
+                transform: scale(0.55);
+            }
+        }
+
+        .carousel-viewport {
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+        }
+    </style>
+<link rel="stylesheet" href="/index.css">
+</head>
+<body>
+    <div id="root"></div>
+<script type="module" src="/index.tsx"></script>
+</body>
+</html>

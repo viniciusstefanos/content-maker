@@ -1,0 +1,65 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile and role information.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["admin", "user"] },
+        "name": { "type": "string" },
+        "avatar": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "Carousel": {
+      "title": "Carousel",
+      "description": "A generated carousel project.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "profile": { "type": "object" },
+        "slides": { "type": "array", "items": { "type": "object" } },
+        "caption": { "type": "string" },
+        "ctaContent": { "type": "string" },
+        "ctaBridge": { "type": "string" },
+        "config": { "type": "object" },
+        "templateId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["userId", "slides", "createdAt"]
+    },
+    "Template": {
+      "title": "Template",
+      "description": "A custom template for generating carousels.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "prompt": { "type": "string" },
+        "technical": { "type": "string" },
+        "tone": { "type": "string" },
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["name", "prompt", "userId"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/carousels/{carouselId}": {
+      "schema": "Carousel",
+      "description": "Generated carousel documents."
+    },
+    "/templates/{templateId}": {
+      "schema": "Template",
+      "description": "Custom template documents."
+    }
+  }
+}

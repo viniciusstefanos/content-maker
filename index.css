@@ -1,0 +1,77 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Jost:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Jost", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", serif;
+
+  --color-teal: #007185;
+  --color-teal-lt: #e8f4f6;
+  --color-teal-mid: #b8dce3;
+  --color-navy: #1E2932;
+  --color-yellow: #F9DD38;
+  --color-off: #f7f7f5;
+  --color-muted: #8a9ba5;
+  --color-border: #e8eaeb;
+  --color-body-mid: #5a6e78;
+}
+
+@layer base {
+  body {
+    @apply font-sans text-navy bg-white antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  .saltear-card {
+    @apply border border-border rounded-[10px] p-6 bg-off relative overflow-hidden;
+    box-shadow: 0 2px 24px rgba(0,0,0,.04);
+  }
+
+  .saltear-card::before {
+    content: '';
+    @apply absolute top-0 left-0 right-0 h-[3px] bg-teal;
+  }
+
+  .saltear-btn-primary {
+    @apply inline-flex items-center gap-2 bg-yellow text-navy font-bold text-sm tracking-wider uppercase px-8 py-4 rounded transition-all hover:-translate-y-0.5 hover:shadow-[0_8px_28px_rgba(249,221,56,0.35)] active:translate-y-0;
+  }
+
+  .saltear-btn-secondary {
+    @apply inline-flex items-center gap-2 bg-white text-navy border border-border font-bold text-sm tracking-wider uppercase px-8 py-4 rounded transition-all hover:bg-teal hover:text-white hover:border-teal;
+  }
+
+  .saltear-eyebrow {
+    @apply font-sans text-[10px] font-bold tracking-[0.22em] uppercase text-teal mb-2;
+  }
+
+  .saltear-line {
+    @apply w-10 h-[2px] bg-teal rounded-full mb-8;
+  }
+
+  .saltear-pill {
+    @apply inline-block bg-teal-lt text-teal text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-full;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-muted;
+}
